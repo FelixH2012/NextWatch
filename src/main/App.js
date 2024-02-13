@@ -6,13 +6,15 @@ import {
     ThemeProvider
 } from '@mui/material';
 
-import {SeriesModal} from './components/SeriesModal';
+import {SeriesModal} from '../components/SeriesModal';
 import _ from 'lodash';
-import {MovieGroup} from "./components/movieGroup/MovieGroup";
-import {EpisodeSelector} from "./components/episodeSelector/EpisodeSelector";
-import {fetchEpisodes, fetching, fetchSeasons} from "./components/js/Fetching";
-import {TopBar} from "./components/topbar/TopBar";
-import seriesJson from './components/episode/result.json'; // Pfad zu Ihrer JSON-Datei
+import {MovieGroup} from "../components/movieGroup/MovieGroup";
+import {EpisodeSelector} from "../components/episodeSelector/EpisodeSelector";
+import {fetchEpisodes, fetching, fetchSeasons} from "../components/js/Fetching";
+import {TopBar} from "../components/topbar/TopBar";
+import seriesJson from '../components/episode/result.json';
+import {BrowserRouter, Route, Router, Routes} from "react-router-dom";
+import BasicForm from "../account/register/BasicForm"; // Pfad zu Ihrer JSON-Datei
 
 const darkTheme = createTheme({
     typography: {
@@ -132,21 +134,35 @@ const MovieList = ({searchTerm}) => {
     );
 }
 
+function Main({setSearchTerm, searchTerm, removeShadowStyle}) {
+    return (
+        <Box sx={{flexGrow: 1}}>
+            <CssBaseline/>
+            <TopBar setSearchTerm={setSearchTerm} removeShadowStyle={removeShadowStyle}/>
+            <Box sx={{paddingTop: 2}}>
+                <MovieList searchTerm={searchTerm}/>
+            </Box>
+        </Box>
+    );
+}
+
 export default function App() {
     const [searchTerm, setSearchTerm] = useState('');
 
     const removeShadowStyle = () => {
     };
 
+
     return (
-        <ThemeProvider theme={darkTheme}>
-            <CssBaseline/>
-            <Box sx={{flexGrow:  1}}>
-                <TopBar setSearchTerm={e => setSearchTerm(e)} removeShadowStyle={removeShadowStyle}></TopBar>
-                <Box sx={{paddingTop:  2}}>
-                    <MovieList searchTerm={searchTerm}/>
-                </Box>
-            </Box>
-        </ThemeProvider>
+        <BrowserRouter>
+            <ThemeProvider theme={darkTheme}>
+                <Routes>
+
+                    <Route path="/account/BasicForm" element={<BasicForm/>}/>
+                    <Route path="/" element={<Main setSearchTerm={setSearchTerm} searchTerm={searchTerm}
+                                              removeShadowStyle={removeShadowStyle}/>}/>
+                </Routes>
+            </ThemeProvider>
+        </BrowserRouter>
     );
 }
