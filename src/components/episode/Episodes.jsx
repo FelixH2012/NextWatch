@@ -29,13 +29,16 @@ const Overlay = styled(Box)(({theme}) => ({
     transition: 'opacity   0.3s ease-in-out',
 }));
 
+const IconWithShadow = styled(PlayArrowIcon)(({ theme }) => ({
+    filter: 'drop-shadow(2px  2px  2px rgba(0,  0,  0,  .6))',
+}));
+
+
 export function Episodes({seriesname, seasonname, episodes}) {
 
     const getLinkForEpisode = (seriesName, seasonNumber, episodeNumber) => {
         const series = linksData[seriesName];
         if (!series) return null;
-
-        // Erzeugen Sie den Schlüssel für die Staffel basierend auf der Formatierung der lokalen JSON-Datei
         const seasonKey = `staffel-${seasonNumber}`;
         const season = series.seasons[seasonKey];
         if (!season) return null;
@@ -56,10 +59,13 @@ export function Episodes({seriesname, seasonname, episodes}) {
         }
     };
 
-
     const handleImageLoad = (url) => {
+        if (!loadingImages.has(url) || loadingImages.get(url)) {
+            return;
+        }
         setLoadingImages((current) => new Map(current.set(url, false)));
     };
+
 
     const handleImageError = (url) => {
         setImageErrors((current) => new Map(current.set(url, true)));
@@ -80,9 +86,6 @@ export function Episodes({seriesname, seasonname, episodes}) {
             {episodes.map((episode) => (
                 <Grid item xs={12} sm={6} md={4} key={episode.id}>
                     <StyledCard>
-                        {episode.image && episode.image.original && loadingImages.get(episode.image.original) ? (
-                            <Skeleton variant="rectangular" width={345} height={180}/>
-                        ) : null}
                         {episode.image && episode.image.original && (
                             <CardMedia
                                 component="img"
@@ -91,8 +94,9 @@ export function Episodes({seriesname, seasonname, episodes}) {
                                 alt={episode.name}
                                 onLoad={() => handleImageLoad(episode.image.original)}
                                 onError={() => handleImageError(episode.image.original)}
-                                style={loadingImages.get(episode.image.original) || imageErrors.get(episode.image.original) ? {display: 'none'} : undefined}
+                                loading="lazy"
                             />
+
                         )}
                         {!episode.image || !episode.image.original ? (
                             <Alert severity="error">Unable to load image</Alert>
@@ -110,11 +114,11 @@ export function Episodes({seriesname, seasonname, episodes}) {
                         </CardContent>
                         <Overlay className="overlay">
                             <IconButton aria-label="play episode" onClick={() => handlePlayButtonClick(seriesname, seasonname, episode.number)}>
-                                <PlayArrowIcon />
+                                <IconWithShadow />
                             </IconButton>
 
                             <IconButton aria-label="save episode">
-                                <SaveAltIcon/>
+                                <SaveAltIcon style={{ filter: 'drop-shadow(2px  2px  2px rgba(0,  0,  0,  0.5))' }} />
                             </IconButton>
                         </Overlay>
                     </StyledCard>

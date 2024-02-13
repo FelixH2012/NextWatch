@@ -92,7 +92,7 @@ export function TopBar({ setSearchTerm, removeShadowStyle }) {
                         </ButtonGroup>
                     </Box>
                     <Box sx={{paddingLeft: 4}}>
-                        <h5>Test-Version (Show feet plz)</h5>
+                        <h5>Test-Version</h5>
                     </Box>
                 </Toolbar>
             </AppBar>

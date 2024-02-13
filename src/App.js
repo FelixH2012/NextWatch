@@ -12,6 +12,7 @@ import {MovieGroup} from "./components/movieGroup/MovieGroup";
 import {EpisodeSelector} from "./components/episodeSelector/EpisodeSelector";
 import {fetchEpisodes, fetching, fetchSeasons} from "./components/js/Fetching";
 import {TopBar} from "./components/topbar/TopBar";
+import seriesJson from './components/episode/result.json'; // Pfad zu Ihrer JSON-Datei
 
 const darkTheme = createTheme({
     palette: {
@@ -79,6 +80,21 @@ const MovieList = ({searchTerm}) => {
             fetchEpisodes(selectedSeason.id, e => setEpisodes(e)).then();
         }
     }, [selectedSeason]);
+
+
+    useEffect(() => {
+        fetching(e => {
+
+            const allowedSeriesNames = Object.keys(seriesJson);
+
+            const filteredSeries = e.filter(apiSeries =>
+                allowedSeriesNames.includes(apiSeries.name.replace(/\s+/g, '-'))
+            );
+            setMovies(filteredSeries);
+        }, e => {
+            setFetchError(e);
+        }).then();
+    }, []);
 
 
     const [isEpisodeSelected, setIsEpisodeSelected] = useState(false);
