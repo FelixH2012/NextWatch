@@ -8,7 +8,7 @@ import {
     DialogContent,
     DialogTitle, IconButton,
     InputBase,
-    Toolbar
+    Toolbar, useMediaQuery
 } from "@mui/material";
 import {
     Close,
@@ -19,14 +19,18 @@ import {
 } from "@mui/icons-material";
 import React from "react";
 import {styled} from "@mui/system";
+import {AboutUs} from "./AboutUs";
+
+
+
 
 const MyStyledButton = styled(Button)(() => ({
-
+    borderRadius: 12
 }));
 
 const Search = styled('div')(({theme}) => ({
     position: 'relative',
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: 12,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
         backgroundColor: alpha(theme.palette.common.white, 0.25),
@@ -40,7 +44,7 @@ const Search = styled('div')(({theme}) => ({
 }));
 
 const SearchIconWrapper = styled('div')(({theme}) => ({
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(1, 2),
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -69,42 +73,47 @@ export function TopBar({ setSearchTerm, removeShadowStyle }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
     return (
         <>
-            <AppBar position="static">
-                <Toolbar>
+            <AppBar position="static" style={{
+                background: '#262626',
+                boxShadow: 'none',
+                borderRadius: '12px',
+                maxWidth: 'calc(100% -  64px)', // Nehmen wir an,  64px ist der gewünschte Abstand von beiden Seiten
+                margin: '16px auto', //  16px Abstand vom oberen Rand, zentriert in der Mitte
+                padding: '0  16px' // Padding links und rechts
+            }}>
+                <Toolbar style={{ borderRadius: '12px', paddingLeft: '0px', paddingRight: '16px' }}>
                     <Search>
                         <SearchIconWrapper>
-                            <SearchIcon/>
+                            <SearchIcon style={{ color: 'inherit' }} />
                         </SearchIconWrapper>
                         <StyledInputBase
                             placeholder="Search"
-                            inputProps={{'aria-label': 'search'}}
-                            onChange={event => setSearchTerm(event.target.value)}
+                            inputProps={{ 'aria-label': 'search' }}
+                            onChange={(event) => setSearchTerm(event.target.value)}
+                            onFocus={() => removeShadowStyle()}
+                            onBlur={() => !setSearchTerm && removeShadowStyle()}
                         />
                     </Search>
-                    <Box sx={{paddingLeft: 4, removeShadowStyle}}>
-                        <ButtonGroup variant="contained" aria-label="Basic button group">
-                            <MyStyledButton startIcon={<PlaylistPlayIcon/>}>Series</MyStyledButton>
-                            <MyStyledButton startIcon={<MovieIcon/>}>Movies</MyStyledButton>
-                            <MyStyledButton startIcon={<InfoIcon/>} onClick={handleOpen}>About us</MyStyledButton>
-                        </ButtonGroup>
-                    </Box>
-                    <Box sx={{paddingLeft: 4}}>
-                        <h5>Test-Version</h5>
-                    </Box>
+                    {!isMobile && (
+                        <Box sx={{ paddingLeft:  2 }}>
+                            <ButtonGroup
+                                variant="contained"
+                                aria-label="Basic button group"
+                                disableElevation
+                            >
+                                <MyStyledButton startIcon={<InfoIcon />} onClick={handleOpen}>
+                                    About us
+                                </MyStyledButton>
+                            </ButtonGroup>
+                        </Box>
+                    )}
                 </Toolbar>
             </AppBar>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>About Us</DialogTitle>
-                <DialogContent>
-                    <p>Made with ♥ By Felix</p>
-                    <p>x</p>
-                    <p>Ashe ♥</p>
-                </DialogContent>
-
-            </Dialog>
+           <AboutUs open={open} handleClose={() => handleClose()}></AboutUs>
         </>
     );
 }

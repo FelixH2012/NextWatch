@@ -15,6 +15,20 @@ import {TopBar} from "./components/topbar/TopBar";
 import seriesJson from './components/episode/result.json'; // Pfad zu Ihrer JSON-Datei
 
 const darkTheme = createTheme({
+    typography: {
+        fontFamily: [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+    },
     palette: {
         mode: 'dark',
         primary: {
@@ -124,13 +138,15 @@ const MovieList = ({searchTerm}) => {
 export default function App() {
     const [searchTerm, setSearchTerm] = useState('');
 
-    const removeShadowStyle = {boxShadow: 0};
+    const removeShadowStyle = () => {
+    };
+
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline/>
-            <Box sx={{flexGrow: 1}}>
+            <Box sx={{flexGrow:  1}}>
                 <TopBar setSearchTerm={e => setSearchTerm(e)} removeShadowStyle={removeShadowStyle}></TopBar>
-                <Box sx={{paddingTop: 2}}>
+                <Box sx={{paddingTop:  2}}>
                     <MovieList searchTerm={searchTerm}/>
                 </Box>
             </Box>

@@ -2,16 +2,13 @@ import {
     Backdrop,
     Box,
     Fade,
-    FormControl,
-    InputLabel,
-    MenuItem,
     Modal,
-    Select,
     Typography
 } from "@mui/material";
 import React from "react";
 import {SeriesModalCard} from "./cardModal/SeriesModalCard";
 import {Episodes} from "./episode/Episodes";
+import {SeasonSelector} from "./seasonSelector/SeasonSelector";
 
 export function SeriesModal({
                                 episodes,
@@ -20,10 +17,7 @@ export function SeriesModal({
                                 selectedMovie,
                                 selectedSeason,
                                 setSelectedSeason,
-                                seasons,
-                                episodeSelector,
-                                selectedEpisode,
-                                isEpisodeSelected
+                                seasons
                             }) {
     return (<Modal
             open={open}
@@ -41,12 +35,12 @@ export function SeriesModal({
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     width: '100%',
-                    maxWidth: 'md', // Maximale Breite des Modals
-                    height: '80%', // Maximale Höhe des Modals
-                    overflowY: 'auto', // Erlaubt das Vertikal-Scrollen
+                    maxWidth: 'sm',
+                    height: '45%',
+                    overflowY: 'auto',
                     bgcolor: 'background.paper',
-                    boxShadow:  11,
-                    p:  4,
+                    boxShadow: 11,
+                    p: 4,
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '2rem',
@@ -57,36 +51,16 @@ export function SeriesModal({
                     'scrollbar-width': 'none',
                 }}>
 
-                {selectedMovie && (
+                    {selectedMovie && (
                         <>
                             <Typography variant="h5" gutterBottom>
                                 {selectedMovie.name}
                             </Typography>
-                            <FormControl variant="outlined">
-                                <InputLabel id="season-select-label">Season</InputLabel>
-                                <Select
-                                    labelId="season-select-label"
-                                    id="season-select"
-                                    value={JSON.stringify(selectedSeason)}
-                                    onChange={(event) => {
-                                        const selectedSeasonObj = JSON.parse(event.target.value);
-                                        setSelectedSeason(selectedSeasonObj);
-                                    }}
-                                    label="Season"
-                                >
-                                    <MenuItem value="{}">
-                                        <em>Select a Season</em>
-                                    </MenuItem>
-                                    {Array.isArray(seasons) && seasons.map((season, index) => (
-                                        <MenuItem key={index}
-                                                  value={JSON.stringify({id: season.id, number: season.number})}>
-                                            {`Season ${season.number}`}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
+                            <SeasonSelector seasons={seasons} selectedSeason={selectedSeason}
+                                            setSelectedSeason={e => setSelectedSeason(e)}></SeasonSelector>
                             {selectedSeason && (
-                                <Episodes seriesname={selectedMovie.name.replace(/\s+/g, '-')} seasonname={selectedSeason.number} episodes={episodes}/>
+                                <Episodes seriesname={selectedMovie.name.replace(/\s+/g, '-')}
+                                          seasonname={selectedSeason.number} episodes={episodes}/>
                             )}
                             {!selectedSeason && (
                                 <SeriesModalCard selectedMovie={selectedMovie}/>

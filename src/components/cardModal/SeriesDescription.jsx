@@ -9,7 +9,7 @@ export function SeriesDescription({selectedMovie}) {
     const maxHeight = '280px';
 
     return (
-        <Grid item xs={5} style={{
+        <Grid item style={{
             overflowY: 'scroll',
             maxHeight,
             '&::-webkit-scrollbar': {
@@ -17,6 +17,7 @@ export function SeriesDescription({selectedMovie}) {
             },
             '-ms-overflow-style': 'none',
             'scrollbar-width': 'none',
+            flex:  1, // Erlaubt dem Element, den verfügbaren Raum zu nutzen
         }}>
             {selectedMovie.summary && (
                 <Typography variant="body1"

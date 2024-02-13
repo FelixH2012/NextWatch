@@ -116,10 +116,6 @@ export function Episodes({seriesname, seasonname, episodes}) {
                             <IconButton aria-label="play episode" onClick={() => handlePlayButtonClick(seriesname, seasonname, episode.number)}>
                                 <IconWithShadow />
                             </IconButton>
-
-                            <IconButton aria-label="save episode">
-                                <SaveAltIcon style={{ filter: 'drop-shadow(2px  2px  2px rgba(0,  0,  0,  0.5))' }} />
-                            </IconButton>
                         </Overlay>
                     </StyledCard>
                 </Grid>
