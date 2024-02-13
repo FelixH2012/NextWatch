@@ -12,12 +12,12 @@ export function SeriesDescription({selectedMovie}) {
         <Grid item style={{
             overflowY: 'scroll',
             maxHeight,
-            '&::-webkit-scrollbar': {
+            '&::WebkitScrollbar': {
                 display: 'none',
             },
-            '-ms-overflow-style': 'none',
-            'scrollbar-width': 'none',
-            flex:  1, // Erlaubt dem Element, den verfügbaren Raum zu nutzen
+            'msOverflowStyle': 'none',
+            'scrollbarWidth': 'none',
+            flex:  1,
         }}>
             {selectedMovie.summary && (
                 <Typography variant="body1"

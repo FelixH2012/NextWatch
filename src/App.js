@@ -122,7 +122,7 @@ const MovieList = ({searchTerm}) => {
     return (
         <div>
             {Object.keys(groupedMovies).map((category) => (
-                <MovieGroup category={category} groupedMovies={groupedMovies}
+                <MovieGroup key={category} category={category} groupedMovies={groupedMovies}
                             handleOpen={e => handleOpen(e)}></MovieGroup>
             ))}
             <SeriesModal episodes={episodes} open={open} handleClose={() => handleClose()} selectedMovie={selectedMovie}

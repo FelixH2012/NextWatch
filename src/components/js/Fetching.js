@@ -13,7 +13,6 @@ export const fetchSeasons = async (showId, setSeasons) => {
     try {
         const response = await axios.get(`https://api.tvmaze.com/shows/${showId}/seasons`);
         setSeasons(response.data);
-        console.log(response.data);
     } catch (error) {
         console.error('Failed to fetch seasons:', error);
     }
