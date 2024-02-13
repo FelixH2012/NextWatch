@@ -95,12 +95,9 @@ const MovieList = ({searchTerm}) => {
         }
     }, [selectedSeason]);
 
-
     useEffect(() => {
         fetching(e => {
-
             const allowedSeriesNames = Object.keys(seriesJson);
-
             const filteredSeries = e.filter(apiSeries =>
                 allowedSeriesNames.includes(apiSeries.name.replace(/\s+/g, '-'))
             );
