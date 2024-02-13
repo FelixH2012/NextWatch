@@ -26,15 +26,11 @@ async function scrapePage(url) {
             voeLink = "Not found";
         }
 
-     //   console.log(`VOE Link found on ${url}: ${voeLink || 'Not found'}`);
         return voeLink;
     } catch (error) {
-        if (error.response && error.response.status ===  400) {
-         //   console.warn(`Bad Request beim Scrapen der Seite ${url}, Überspringe diese Seite.`);
+        if (error.response && error.response.status ===  400)
             return null;
-        } else {
-         //   console.error(`Fehler beim Scrapen der Seite ${url}:`, error);
-        }
+
     }
 }
 
@@ -57,7 +53,6 @@ async function main() {
 
     const startTime = Date.now();
 
-    // Create a new progress bar instance and start it
     const progressBar = new cliProgress.SingleBar({
         format: '{bar} {percentage}% | {value}/{total} | Time: {duration_formatted} | ETA: {eta_formatted}',
         barCompleteChar: '\u2588',
@@ -71,7 +66,6 @@ async function main() {
 
     for (const show of shows) {
         show.name = show.name.replace(/\s+/g, '-');
-        // Update the progress bar instead of logging to the console
         const elapsedTime = Date.now() - startTime;
         const minutesElapsed = Math.floor(elapsedTime / (60 *  1000));
         const secondsElapsed = ((elapsedTime % (60 *  1000)) /  1000).toFixed(0);
@@ -117,7 +111,6 @@ async function main() {
         currentShowIndex++;
     }
 
-    // Stop the progress bar once completed
     progressBar.stop();
 
     fs.writeFileSync('result.json', JSON.stringify(allResults, null,  2), 'utf8');
